@@ -1,31 +1,100 @@
 import { useState } from 'react';
 import './App.css';
 
-function App() {
-  // 원시자료형
-  //   let [number, setNumber] = useState(1);
-  let [array, setArray] = useState([1, 2, 3]);
-  console.log('rerendering');
+// TODO
+// Create, Read, Update, Delete
 
-  const handler = () => {
-    // array.push(5); // 같은 주소값을 사용하고 있기 때문에 리렌더링이 안일어남. 원래 있던 배열이 아니라 새로운 배열 사용해야함
-    // const newArray = array.slice();
-    const newArray = [...array];
-    newArray.push(5);
-    setArray(newArray);
-    console.log(newArray);
-    //   setNumber(2);
-    //   console.log(number);
-  };
+function App() {
+  const [todoList, setTodoList] = useState([
+    { id: 0, content: '밥 먹기' },
+    { id: 1, content: '코딩 공부하기' },
+    { id: 2, content: '잠 자기' },
+  ]);
 
   return (
     <>
-      {/* number : {number} */}
-      array : [{array.join(',')}]
-      <br />
-      <button onClick={handler}>상태 업데이트!</button>
+      <TodoList todoList={todoList} setTodoList={setTodoList} />
+      <hr />
+      <TodoInput todoList={todoList} setTodoList={setTodoList} />
+      {/* <ul>
+        {todoList.map((todo) => (
+          <li key={todo.id}>{todo.content}</li>
+        ))}
+        <li>{todoList[0].content}</li>
+        <li>{todoList[1].content}</li>
+      </ul> */}
     </>
   );
 }
 
+function TodoInput({ todoList, setTodoList }) {
+  const [inputValue, setInputValue] = useState('');
+  console.log(inputValue);
+  return (
+    <>
+      <input
+        value={inputValue}
+        onChange={(event) => setInputValue(event.target.value)}
+      />
+      <button
+        onClick={() => {
+          const newTodo = { id: Number(new Date()), content: inputValue };
+
+          const newTodoList = [...todoList, newTodo];
+          setTodoList(newTodoList);
+          setInputValue('');
+          console.log(newTodo);
+        }}
+      >
+        추가하기
+      </button>
+    </>
+  );
+}
+
+function TodoList({ todoList, setTodoList }) {
+  return (
+    <ul>
+      {todoList.map((todo) => (
+        <Todo key={todo.id} todo={todo} setTodoList={setTodoList} />
+      ))}
+    </ul>
+  );
+}
+
+function Todo({ todo, setTodoList }) {
+  const [inputValue, setInputValue] = useState('');
+  console.log(todo.content, inputValue);
+  return (
+    <>
+      <li>
+        {todo.content}
+        <input
+          value={inputValue}
+          onChange={(event) => setInputValue(event.target.value)}
+        />
+        <button
+          onClick={() => {
+            setTodoList((prev) =>
+              prev.map((el) =>
+                el.id === todo.id ? { ...el, content: inputValue } : el
+              )
+            );
+          }}
+        >
+          수정
+        </button>
+        <button
+          onClick={() => {
+            setTodoList((prev) => {
+              return prev.filter((el) => el.id !== todo.id);
+            });
+          }}
+        >
+          x
+        </button>
+      </li>
+    </>
+  );
+}
 export default App;
