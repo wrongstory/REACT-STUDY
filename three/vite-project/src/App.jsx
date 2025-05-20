@@ -38,23 +38,36 @@ import { Component } from 'react';
 
 class App extends Component {
   state = { counter: 2 };
+
+  incrementCounter = () => {
+    this.setState({ counter: this.state.counter + 1 });
+  };
+
+  decrementCounter = () => {
+    this.setState({ counter: this.state.counter - 1 });
+  };
+
   render() {
     return (
       <>
         {/* <div>counter {this.state.counter}</div> */}
         <Count counter={this.state.counter} />
-        <button
-          onClick={() => this.setState({ counter: this.state.counter + 1 })}
-        >
-          +
-        </button>
-        <button
-          onClick={() => this.setState({ counter: this.state.counter - 1 })}
-        >
-          -
-        </button>
+        <PlusButton incrementCounter={this.incrementCounter} />
+        <MinusButton decrementCounter={this.decrementCounter} />
       </>
     );
+  }
+}
+
+class PlusButton extends Component {
+  render() {
+    return <button onClick={this.props.incrementCounter}>+</button>;
+  }
+}
+
+class MinusButton extends Component {
+  render() {
+    return <button onClick={this.props.decrementCounter}>-</button>;
   }
 }
 
