@@ -1,65 +1,58 @@
 import { useState } from 'react';
 import './App.css';
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 
 function App() {
-  const [mood, setMood] = useState('Normal');
+  const navigate = useNavigate();
+  // navigate( ? )
+
+  //   console.log(location);
+  //   console.log(location.pathname);
+
   return (
     <>
-      <Face mood={mood} />
-      <Face2 mood={mood} />
-      <Face3 mood={mood} />
-      <div
-        className={
-          mood === 'Happy' ? 'happy' : mood === 'Normal' ? 'normal' : 'sad'
-        }
-      >
-        기분: {mood}
-      </div>
       <div>
-        <button onClick={() => setMood('Happy')}>Happy</button>
-        <button onClick={() => setMood('Normal')}>Normal</button>
-        <button onClick={() => setMood('Sad')}>Sad</button>
+        {/* <Link to="/main"> 메인</Link>
+        <Link to="/mypage"> 마이페이지</Link>
+        <Link to="/test"> 테스트</Link> */}
+        <div>
+          <button onClick={() => navigate('/main')}>메인</button>
+          <button onClick={() => navigate('/mypage')}>마이페이지</button>
+          <button onClick={() => navigate('/test')}>테스트</button>
+        </div>
+        <div>
+          <button onClick={() => navigate(-1)}>{`<- 뒤로가기`}</button>
+          <button onClick={() => navigate(1)}>{`앞으로가기 ->`}</button>
+        </div>
       </div>
+      <Routes>
+        <Route path="/main" element={<Main />} />
+        <Route path="/mypage" element={<div>마이 페이지</div>} />
+        <Route path="/test" element={<div>테스트 페이지</div>} />
+      </Routes>
     </>
   );
 }
 
-// 1. if문으로 리턴하는 JSX문 바꿔주기
-function Face({ mood }) {
-  if (mood === 'Happy') {
-    return <div>😊</div>;
-  } else if (mood === 'Normal') {
-    return <p>😑</p>;
-  } else {
-    return <span>😩</span>;
-  }
+function Main() {
+  const params = useParams();
+  console.log(params.name);
+
+  const location = useLocation();
+  console.log(location.search);
+  const [searchParams, setSearchParams] = useSearchParams();
+  console.log(searchParams.get('name'));
+  console.log(searchParams.get('school'));
+
+  return <div>메인 페이지</div>;
 }
 
-// 2. 삼항연산자 사용하기 ***
-// JSX 구문 내에서 중괄호가 열렸을 경우 if문을 사용 불가. 삼항연산자 가능.
-function Face2({ mood }) {
-  return (
-    <>
-      {mood === 'Happy' ? (
-        <div>😊</div>
-      ) : mood === 'Normal' ? (
-        <p>😑</p>
-      ) : (
-        <span>😩</span>
-      )}
-    </>
-  );
-}
-
-//3. 논리 연산자 ***
-// true 일 경우에는 내용을 띄우지만 false 인 경우에는 아무것도 띄우지 않는다
-function Face3({ mood }) {
-  return (
-    <>
-      {mood === 'Happy' && <div>😊</div>}
-      {mood === 'Normal' && <p>😑</p>}
-      {mood === 'Sad' && <span>😩</span>}
-    </>
-  );
-}
 export default App;
