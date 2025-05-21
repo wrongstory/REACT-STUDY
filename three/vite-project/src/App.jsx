@@ -1,99 +1,64 @@
 import { useState } from 'react';
 import './App.css';
 
-// TODO
-// Create, Read, Update, Delete
-
 function App() {
-  const [todoList, setTodoList] = useState([
-    { id: 0, content: '밥 먹기' },
-    { id: 1, content: '코딩 공부하기' },
-    { id: 2, content: '잠 자기' },
-  ]);
-
+  const [mood, setMood] = useState('Normal');
   return (
     <>
-      <TodoList todoList={todoList} setTodoList={setTodoList} />
-      <hr />
-      <TodoInput todoList={todoList} setTodoList={setTodoList} />
-      {/* <ul>
-        {todoList.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
-        ))}
-        <li>{todoList[0].content}</li>
-        <li>{todoList[1].content}</li>
-      </ul> */}
-    </>
-  );
-}
-
-function TodoInput({ todoList, setTodoList }) {
-  const [inputValue, setInputValue] = useState('');
-  console.log(inputValue);
-  return (
-    <>
-      <input
-        value={inputValue}
-        onChange={(event) => setInputValue(event.target.value)}
-      />
-      <button
-        onClick={() => {
-          const newTodo = { id: Number(new Date()), content: inputValue };
-
-          const newTodoList = [...todoList, newTodo];
-          setTodoList(newTodoList);
-          setInputValue('');
-          console.log(newTodo);
-        }}
+      <Face mood={mood} />
+      <Face2 mood={mood} />
+      <Face3 mood={mood} />
+      <div
+        className={
+          mood === 'Happy' ? 'happy' : mood === 'Normal' ? 'normal' : 'sad'
+        }
       >
-        추가하기
-      </button>
+        기분: {mood}
+      </div>
+      <div>
+        <button onClick={() => setMood('Happy')}>Happy</button>
+        <button onClick={() => setMood('Normal')}>Normal</button>
+        <button onClick={() => setMood('Sad')}>Sad</button>
+      </div>
     </>
   );
 }
 
-function TodoList({ todoList, setTodoList }) {
+// 1. if문으로 리턴하는 JSX문 바꿔주기
+function Face({ mood }) {
+  if (mood === 'Happy') {
+    return <div>😊</div>;
+  } else if (mood === 'Normal') {
+    return <p>😑</p>;
+  } else {
+    return <span>😩</span>;
+  }
+}
+
+// 2. 삼항연산자 사용하기 ***
+// JSX 구문 내에서 중괄호가 열렸을 경우 if문을 사용 불가. 삼항연산자 가능.
+function Face2({ mood }) {
   return (
-    <ul>
-      {todoList.map((todo) => (
-        <Todo key={todo.id} todo={todo} setTodoList={setTodoList} />
-      ))}
-    </ul>
+    <>
+      {mood === 'Happy' ? (
+        <div>😊</div>
+      ) : mood === 'Normal' ? (
+        <p>😑</p>
+      ) : (
+        <span>😩</span>
+      )}
+    </>
   );
 }
 
-function Todo({ todo, setTodoList }) {
-  const [inputValue, setInputValue] = useState('');
-  console.log(todo.content, inputValue);
+//3. 논리 연산자 ***
+// true 일 경우에는 내용을 띄우지만 false 인 경우에는 아무것도 띄우지 않는다
+function Face3({ mood }) {
   return (
     <>
-      <li>
-        {todo.content}
-        <input
-          value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
-        />
-        <button
-          onClick={() => {
-            setTodoList((prev) =>
-              prev.map((el) =>
-                el.id === todo.id ? { ...el, content: inputValue } : el
-              )
-            );
-          }}
-        >
-          수정
-        </button>
-        <button
-          onClick={() => {
-            setTodoList((prev) => {
-              return prev.filter((el) => el.id !== todo.id);
-            });
-          }}
-        >
-          x
-        </button>
-      </li>
+      {mood === 'Happy' && <div>😊</div>}
+      {mood === 'Normal' && <p>😑</p>}
+      {mood === 'Sad' && <span>😩</span>}
     </>
   );
 }
