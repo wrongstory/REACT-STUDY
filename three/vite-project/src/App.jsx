@@ -1,58 +1,34 @@
 import { useState } from 'react';
 import './App.css';
-import {
-  Link,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Main from './page/main';
+import Detail from './page/Detail';
+import Search from './page/Search';
 
 function App() {
+  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
-  // navigate( ? )
-
-  //   console.log(location);
-  //   console.log(location.pathname);
-
+  console.log(inputValue);
   return (
     <>
-      <div>
-        {/* <Link to="/main"> 메인</Link>
-        <Link to="/mypage"> 마이페이지</Link>
-        <Link to="/test"> 테스트</Link> */}
-        <div>
-          <button onClick={() => navigate('/main')}>메인</button>
-          <button onClick={() => navigate('/mypage')}>마이페이지</button>
-          <button onClick={() => navigate('/test')}>테스트</button>
-        </div>
-        <div>
-          <button onClick={() => navigate(-1)}>{`<- 뒤로가기`}</button>
-          <button onClick={() => navigate(1)}>{`앞으로가기 ->`}</button>
-        </div>
-      </div>
+      <header>
+        <h1>💚 동물 조아 💚</h1>
+        <input
+          value={inputValue}
+          onChange={(event) => setInputValue(event.target.value)}
+        />
+        <button onClick={() => navigate(`/search?animal=${inputValue}`)}>
+          검색
+        </button>
+      </header>
       <Routes>
-        <Route path="/main" element={<Main />} />
-        <Route path="/mypage" element={<div>마이 페이지</div>} />
-        <Route path="/test" element={<div>테스트 페이지</div>} />
+        <Route path="/" element={<Main />}></Route>
+        <Route path="detail/:id" element={<Detail />}></Route>
+        <Route path="search" element={<Search />}></Route>
       </Routes>
+      <footer>all rights reserved to L</footer>
     </>
   );
-}
-
-function Main() {
-  const params = useParams();
-  console.log(params.name);
-
-  const location = useLocation();
-  console.log(location.search);
-  const [searchParams, setSearchParams] = useSearchParams();
-  console.log(searchParams.get('name'));
-  console.log(searchParams.get('school'));
-
-  return <div>메인 페이지</div>;
 }
 
 export default App;
