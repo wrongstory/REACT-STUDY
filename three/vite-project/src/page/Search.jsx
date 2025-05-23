@@ -5,8 +5,8 @@ import { getRegExp } from 'korean-regexp';
 function Search() {
   const [searchParams] = useSearchParams();
   const param = searchParams.get('animal');
+  console.log(param);
   const reg = getRegExp(param);
-  console.log(searchParams.get('animal'));
 
   const filteredData = data.filter((el) => el.name.match(reg));
 
