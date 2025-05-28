@@ -10,13 +10,16 @@
   Custom Hook 을 만들고 사용 */
 }
 
+import { useRef, useState } from 'react';
 import './App.css';
 
-function HeadLine() {
-  return <h1>Todo List is now on your BukitList!</h1>;
-}
-
 function App() {
+  const [todo, setTodo] = useState([
+    {
+      id: Number(new Date()),
+      content: '안녕하세요',
+    },
+  ]);
   return (
     <>
       <header>
@@ -33,21 +36,55 @@ function App() {
         <span>내용</span>
         <span>기능</span>
         <hr />
-        <ul>
-          <li>
-            아 존맛탱
-            <button>수정</button>
-            <button>삭제</button>
-          </li>
-        </ul>
+        <MainList todo={todo} setTodo={setTodo} />
         <hr />
-        <input />
-        <button>추가</button>
+        <InputTodo setTodo={setTodo} />
       </main>
       <hr />
       <footer>Create by. L</footer>
     </>
   );
+  function HeadLine() {
+    return <h1>Todo List is now on your BukitList!</h1>;
+  }
+
+  function MainList({ todo, setTodo }) {
+    return (
+      <ul>
+        {todo.map((todo) => (
+          <li key={todo.id}>
+            {todo.content}
+            <button>수정</button>
+            <button
+              onClick={() => {
+                setTodo((prev) => prev.filter((el) => el.id !== todo.id));
+              }}
+            >
+              삭제
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  function InputTodo({ setTodo }) {
+    const inputRef = useRef(null);
+    const addTodo = () => {
+      const newTodo = {
+        id: Number(new Date()),
+        // inputRef 에 current 를 찍어서 DOM 주소를 가져온 다음 DOM 요소의 value 를 가져옴
+        content: inputRef.current.value,
+      };
+      setTodo((prev) => [...prev, newTodo]);
+    };
+    return (
+      <>
+        <input ref={inputRef} />
+        <button onClick={addTodo}>추가</button>
+      </>
+    );
+  }
 }
 
 export default App;
