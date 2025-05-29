@@ -60,35 +60,30 @@ h2 {
   font-size: $font-mid;
 }
 
-ul {
-  display: grid;
-  gap: 10px;
+@mixin flex($align: start, $justify: start, $gap: 0, $direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
 }
 
-li {
-  &:hover {
-    background-color: lightgray;
-  }
+ul {
+  @include flex($gap: 010px, $direction: column);
+}
 
-  color: $color-black;
-  font-weight: $font-thin;
-  font-size: $font-small;
+@mixin font($color, $size, $weight) {
+  color: $color;
+  font-size: $size;
+  font-weight: $weight;
+}
+ul {
+  @include flex($gap: 20px, $direction: column);
+  @include font(blue, $font-mid, $font-bold);
+}
 
-  p {
-    color: black;
-    font-weight: $font-bold;
-  }
-  section {
-    color: blue;
-  }
-  article {
-    color: orange;
-
-    h3 {
-      color: green;
-    }
-  }
-  h2 {
-    color: pink;
-  }
+section {
+  width: 90vw;
+  @include font($color-black, $font-small, $font-thin);
+  @include flex(center, space-between, 20px);
 }
