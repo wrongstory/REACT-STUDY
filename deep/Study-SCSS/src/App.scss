@@ -66,7 +66,29 @@ ul {
 }
 
 li {
+  &:hover {
+    background-color: lightgray;
+  }
+
   color: $color-black;
   font-weight: $font-thin;
   font-size: $font-small;
+
+  p {
+    color: black;
+    font-weight: $font-bold;
+  }
+  section {
+    color: blue;
+  }
+  article {
+    color: orange;
+
+    h3 {
+      color: green;
+    }
+  }
+  h2 {
+    color: pink;
+  }
 }
