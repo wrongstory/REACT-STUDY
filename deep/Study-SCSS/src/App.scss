@@ -41,7 +41,32 @@
   color: #888;
 }
 
+$font-big: 50px;
+$font-mid: 40px;
+$font-small: 30px;
+
+$font-bold: 900;
+$font-thin: 200;
+
+$color-black: rgb(82, 108, 192);
+
 .test {
-  font-size: 50px;
-  font-weight: 900;
+  font-size: $font-big;
+  font-weight: $font-bold;
+}
+h2 {
+  color: $color-black;
+  font-weight: $font-bold;
+  font-size: $font-mid;
+}
+
+ul {
+  display: grid;
+  gap: 10px;
+}
+
+li {
+  color: $color-black;
+  font-weight: $font-thin;
+  font-size: $font-small;
 }
