@@ -3,7 +3,7 @@ import './App.scss'
 import data from './assets/data'
 import Header from './components/Header'
 import Menu from './components/Menu'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom' 
 import Cart from './components/Cart'
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
       <Header />
       <main>
         <Routes>
-          <Route path='/' element={<Menu />}/>
-          <Route path='/cart' element={<Cart />}/>
+          <Route path='/' element={<Menu menu={menu} cart={cart} setCart={setCart}/>}/>
+          <Route path='/cart' element={<Cart cart={cart} setCart={setCart} menu={menu}/>}/>
         </Routes>
       </main>
     </div>

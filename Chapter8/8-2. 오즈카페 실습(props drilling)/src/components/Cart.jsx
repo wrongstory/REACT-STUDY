@@ -1,6 +1,6 @@
 import data from "../assets/data"
 
-function Cart ({menu, cart}) {
+function Cart ({menu, cart, setCart}) {
     if (!menu) return (<div style={{textAlign:"center", margin: '80px'}}> 메뉴 정보가 없어요!</div>)
     const allMenus = [...menu.커피, ...menu.논커피]
     return (
@@ -12,13 +12,15 @@ function Cart ({menu, cart}) {
                     item={allMenus.find(menu => menu.id === el.id)} 
                     options={el.options} 
                     quantity={el.quantity}
+                    setCart={setCart}
+                    cart={cart}
                 />) : <div className="no-item">장바구니에 담긴 상품이 없어요!</div>}
             </ul>
         </>
     )
 }
 
-function CartItem ({item, options, quantity}) {
+function CartItem ({item, options, quantity, setCart, cart}) {
     return (
         <li className='cart-item'>
             <div className="cart-item-info">
@@ -30,6 +32,7 @@ function CartItem ({item, options, quantity}) {
                 <div>개수 : {quantity}</div>
             </div>
             <button className="cart-item-delete" onClick={() => {
+                setCart(cart.filter(el => el.id !== item.id))
             }}>삭제</button>
         </li>
     )

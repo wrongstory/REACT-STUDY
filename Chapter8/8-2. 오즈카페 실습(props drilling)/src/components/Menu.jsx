@@ -2,7 +2,7 @@ import { useState } from "react"
 import Item from "./Item"
 import OrderModal from "./OrderModal"
 
-function Menu ({menu}) {
+function Menu ({ menu, cart, setCart }) {
     if (!menu) return (<div style={{textAlign:"center", margin: '80px'}}> 메뉴 정보가 없어요!</div>)
     
     const [ modalOn, setModalOn ] = useState(false)
@@ -26,7 +26,7 @@ function Menu ({menu}) {
                         </ul>
                     </section>
             )})}
-            {modalOn? <OrderModal 
+            {modalOn? <OrderModal cart={cart} setCart={setCart}
                 modalMenu={modalMenu} 
                 setModalOn={setModalOn} 
             /> : null}
