@@ -1,6 +1,7 @@
-import { combineReducers, legacy_createStore } from 'redux';
+import { applyMiddleware, combineReducers, legacy_createStore } from 'redux';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { thunk } from 'redux-thunk';
 
 const increment1 = {
   type: 'increment1',
@@ -42,7 +43,7 @@ const counter2Reducer = (state = 4, action) => {
 
 const rootReducer = combineReducers({ counter1Reducer, counter2Reducer });
 
-export const store = legacy_createStore(rootReducer);
+export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 function App() {
   const counter1 = useSelector((state) => state.counter1Reducer);
@@ -52,8 +53,28 @@ function App() {
   return (
     <>
       <div>Counter1 : {counter1}</div>
-      <button onClick={() => dispatch(increment1)}>+</button>
-      <button onClick={() => dispatch(decrement1)}>-</button>
+      <button
+        onClick={() =>
+          dispatch((dispatch) => {
+            setTimeout(() => {
+              dispatch(increment1);
+            }, 1000);
+          })
+        }
+      >
+        +
+      </button>
+      <button
+        onClick={() =>
+          dispatch((dispatch) => {
+            setTimeout(() => {
+              dispatch(decrement1);
+            }, 1000);
+          })
+        }
+      >
+        -
+      </button>
       <div>Counter2 : {counter2}</div>
       <button onClick={() => dispatch(increment2)}>+</button>
       <button onClick={() => dispatch(decrement2)}>-</button>
