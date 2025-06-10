@@ -1,10 +1,12 @@
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 export default function ServerTodo() {
   const [todo, setTodo] = useState([]);
   const inputRef = useRef(null);
 
+  // JSON [123] -> "[123]"
+  // "[123]" -> [123] (서버랑 통신하기에 배열 주소가 유지가 안됨)
   const fetchData = useCallback(() => {
     axios.get("http://localhost:4000").then((res) => {
       setTodo(res.data);
@@ -45,7 +47,7 @@ export default function ServerTodo() {
         {todo.map((el) => (
           <List
             key={el.id}
-            el={el}
+            {...el}
             updateTodo={updateTodo}
             deleteTodo={deleteTodo}
           />
@@ -55,30 +57,31 @@ export default function ServerTodo() {
   );
 }
 
-const List = ({ el, updateTodo, deleteTodo }) => {
+// memo 는 props 만 가지고 리렌더링 진행 판단하기에 로직 잘 짤것것
+const List = memo(({ id, content, updateTodo, deleteTodo }) => {
   const [inputValue, setInputValue] = useState("");
 
   return (
     <li>
-      {el.content}
+      {content}
       <input
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
       <button
         onClick={() => {
-          updateTodo(el.id, inputValue);
+          updateTodo(id, inputValue);
         }}
       >
         수정
       </button>
       <button
         onClick={() => {
-          deleteTodo(el.id);
+          deleteTodo(id);
         }}
       >
         X
       </button>
     </li>
   );
-};
+});
