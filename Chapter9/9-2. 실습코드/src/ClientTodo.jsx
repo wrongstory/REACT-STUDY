@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 
 export default function ClientTodo() {
   const [todo, setTodo] = useState([
@@ -8,22 +8,22 @@ export default function ClientTodo() {
 
   const inputRef = useRef(null);
 
-  const addTodo = () => {
+  const addTodo = useCallback(() => {
     setTodo((prev) => [
       ...prev,
       { id: Number(new Date()), content: inputRef.current.value },
     ]);
-  };
+  }, []);
 
-  const updateTodo = (id, newContent) => {
+  const updateTodo = useCallback((id, newContent) => {
     setTodo((prev) =>
       prev.map((el) => (el.id === id ? { id, content: newContent } : el))
     );
-  };
+  }, []);
 
-  const deleteTodo = (id) => {
+  const deleteTodo = useCallback((id) => {
     setTodo((prev) => prev.filter((el) => el.id !== id));
-  };
+  }, []);
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function ClientTodo() {
   );
 }
 
-const List = ({ el, updateTodo, deleteTodo }) => {
+const List = memo(({ el, updateTodo, deleteTodo }) => {
   const [inputValue, setInputValue] = useState("");
 
   return (
@@ -72,4 +72,4 @@ const List = ({ el, updateTodo, deleteTodo }) => {
       </button>
     </li>
   );
-};
+});
