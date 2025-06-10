@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -25,11 +25,18 @@ function App() {
 
   return (
     <>
+      <NumberDisplay number={number} />
       <div>numberPlus1 : {numberPlus1}</div>
       <button onClick={() => setNumber(number + 1)}>+1</button>
       <button onClick={() => setRerender(!rerender)}>Rerender</button>
     </>
   );
 }
+
+// memo 전달 props 가 동일할 경우 리렌더링 방지
+const NumberDisplay = memo(({ number }) => {
+  console.log("display 렌더");
+  return <div>numberPlus1 : {number}</div>;
+});
 
 export default App;
