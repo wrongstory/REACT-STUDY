@@ -1,31 +1,34 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function ServerTodo() {
   const [todo, setTodo] = useState([]);
   const inputRef = useRef(null);
 
-  const fetchData = () => {
-    axios.get("http://localhost:4000").then((res) => setTodo(res.data));
-  };
+  const fetchData = useCallback(() => {
+    axios.get("http://localhost:4000").then((res) => {
+      setTodo(res.data);
+      console.log(res.data);
+    });
+  }, []);
 
-  const addTodo = () => {
+  const addTodo = useCallback(() => {
     axios
       .post("http://localhost:4000", inputRef.current.value)
       .then(() => fetchData());
-  };
+  }, []);
 
-  const updateTodo = (id, newContent) => {
+  const updateTodo = useCallback((id, newContent) => {
     axios
       .put("http://localhost:4000", { id, newContent })
       .then(() => fetchData());
-  };
+  }, []);
 
-  const deleteTodo = (id) => {
+  const deleteTodo = useCallback((id) => {
     axios
       .delete("http://localhost:4000", { data: { id } })
       .then(() => fetchData());
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
